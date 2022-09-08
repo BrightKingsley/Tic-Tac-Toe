@@ -1,0 +1,219 @@
+// /*
+const box1 = document.querySelector(".box-1");
+const box2 = document.querySelector(".box-2");
+const box3 = document.querySelector(".box-3");
+const box4 = document.querySelector(".box-4");
+const box5 = document.querySelector(".box-5");
+const box6 = document.querySelector(".box-6");
+const box7 = document.querySelector(".box-7");
+const box8 = document.querySelector(".box-8");
+const box9 = document.querySelector(".box-9");
+const message = document.querySelector(".message");
+const initBtn = document.querySelector(".init");
+
+const allBoxes = document.querySelectorAll(".box");
+const playerMove = "X";
+const botMove = "O";
+
+let currentPlayer;
+let currentMovesCount = 0;
+let totalNumberOfMoves = 9;
+let optionsList = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+let availableOptions = optionsList.map((option) => option);
+let inPlay = true;
+
+const boxes = [
+  { boxNum: box1, id: 1, alreadyPicked: false },
+  { boxNum: box2, id: 2, alreadyPicked: false },
+  { boxNum: box3, id: 3, alreadyPicked: false },
+  { boxNum: box4, id: 4, alreadyPicked: false },
+  { boxNum: box5, id: 5, alreadyPicked: false },
+  { boxNum: box6, id: 6, alreadyPicked: false },
+  { boxNum: box7, id: 7, alreadyPicked: false },
+  { boxNum: box8, id: 8, alreadyPicked: false },
+  { boxNum: box9, id: 9, alreadyPicked: false },
+];
+
+initBtn.addEventListener("click", () => {
+  init();
+});
+
+function init() {
+  // initBtn.style.display = "none";
+  const chooseFirstPlayer = Math.floor(Math.random() * 2);
+  console.log(chooseFirstPlayer);
+  const firstPlayerChoice = chooseFirstPlayer === 0 ? "bot" : "player";
+  allBoxes.forEach((box) => (box.textContent = ""));
+  let currentPlayer = firstPlayerChoice;
+  message.textContent =
+    firstPlayerChoice === "bot" ? "Bot's Turn" : "Player's Turn";
+  currentPlayer === "bot" ? botTurn() : playerTurn();
+}
+init();
+
+function registerMove(boxPicked, pickedBy, i) {
+  if ((currentMovesCount < totalNumberOfMoves) & inPlay) {
+    !boxPicked.alreadyPicked ? moved(boxPicked, pickedBy, i) : null;
+  } else {
+    message.textContent = "Game Over";
+    initBtn.style.display = "inline-block";
+  }
+}
+
+function moved(boxPicked, pickedBy, i) {
+  boxPicked.boxNum.textContent = pickedBy === "player" ? playerMove : botMove;
+  pickedBy === "player" ? botTurn() : playerTurn();
+  currentMovesCount++;
+  boxPicked.alreadyPicked = true;
+  availableOptions.splice(availableOptions.indexOf(i), 1);
+  message.textContent =
+    currentPlayer === "player" ? "Bot's Turn" : "Player's Turn";
+  win();
+}
+
+function playerTurn() {
+    availableOptions.forEach((option, i) => {
+      boxes[i].boxNum.addEventListener("click", () => {
+        registerMove(boxes[i], "player", i);
+        currentPlayer = "bot";
+      });
+    });
+}
+function botTurn() {
+  setTimeout(() => {
+    let botPick = Math.floor(Math.random() * availableOptions.length);
+    let botPicked = availableOptions[botPick];
+    let botChoice = boxes[botPicked];
+    registerMove(botChoice, "bot", botPicked);
+    currentPlayer = "player";
+  }, 1200);
+}
+
+function win() {
+  // if (box1.textContent === box2.textContent) {
+  //   console.log("win");
+  // }
+  if (boxes.map((box) => box.boxNum.textContent !== "")) {
+    // console.log("works");
+    // console.log(boxes.map((box) => box.boxNum.textContent === ""));
+    if (
+      box1.textContent !== "" &&
+      box2.textContent !== "" &&
+      box3.textContent !== "" &&
+      box1.textContent === box2.textContent &&
+      box2.textContent === box3.textContent
+    ) {
+      message.textContent =
+        currentPlayer === "bot" ? "Bot WON!" : "Player WON!";
+      inPlay = false;
+    }
+    if (
+      box4.textContent !== "" &&
+      box5.textContent !== "" &&
+      box6.textContent !== "" &&
+      box4.textContent === box5.textContent &&
+      box5.textContent === box6.textContent
+    ) {
+      message.textContent =
+        currentPlayer === "bot" ? "Bot WON!" : "Player WON!";
+      inPlay = false;
+    }
+    if (
+      box7.textContent !== "" &&
+      box8.textContent !== "" &&
+      box9.textContent !== "" &&
+      box7.textContent === box8.textContent &&
+      box8.textContent === box9.textContent
+    ) {
+      message.textContent =
+        currentPlayer === "bot" ? "Bot WON!" : "Player WON!";
+      inPlay = false;
+    }
+    if (
+      box1.textContent !== "" &&
+      box4.textContent !== "" &&
+      box7.textContent !== "" &&
+      box1.textContent === box4.textContent &&
+      box4.textContent === box7.textContent
+    ) {
+      message.textContent =
+        currentPlayer === "bot" ? "Bot WON!" : "Player WON!";
+      inPlay = false;
+    }
+    if (
+      box2.textContent !== "" &&
+      box5.textContent !== "" &&
+      box8.textContent !== "" &&
+      box2.textContent === box5.textContent &&
+      box5.textContent === box8.textContent
+    ) {
+      message.textContent =
+        currentPlayer === "bot" ? "Bot WON!" : "Player WON!";
+      inPlay = false;
+    }
+    if (
+      box3.textContent !== "" &&
+      box6.textContent !== "" &&
+      box9.textContent !== "" &&
+      box3.textContent === box6.textContent &&
+      box6.textContent === box9.textContent
+    ) {
+      message.textContent =
+        currentPlayer === "bot" ? "Bot WON!" : "Player WON!";
+      inPlay = false;
+    }
+    if (
+      box1.textContent !== "" &&
+      box5.textContent !== "" &&
+      box9.textContent !== "" &&
+      box1.textContent === box5.textContent &&
+      box5.textContent === box9.textContent
+    ) {
+      message.textContent =
+        currentPlayer === "bot" ? "Bot WON!" : "Player WON!";
+      inPlay = false;
+    }
+    if (
+      box3.textContent !== "" &&
+      box5.textContent !== "" &&
+      box7.textContent !== "" &&
+      box3.textContent === box5.textContent &&
+      box5.textContent === box7.textContent
+    ) {
+      message.textContent =
+        currentPlayer === "bot" ? "Bot WON!" : "Player WON!";
+      inPlay = false;
+    }
+
+    // }
+    // if ((box1.textContent == box2.textContent) == box3.textContent) {
+    //   message.textContent = currentPlayer=== 'botr'? 'Bot WON!': ''Player WON!;
+    // }
+    // if ((box4.textContent == box5.textContent) == box6.textContent) {
+    //   message.textContent = currentPlayer=== 'botr'? 'Bot WON!': ''Player WON!;
+    // }
+    // if ((box7.textContent == box8.textContent) == box9.textContent) {
+    //   message.textContent = currentPlayer=== 'botr'? 'Bot WON!': ''Player WON!;
+    // }
+    // if ((box1.textContent == box4.textContent) == box7.textContent) {
+    //   message.textContent = currentPlayer=== 'botr'? 'Bot WON!': ''Player WON!;
+    // }
+    // if ((box2.textContent == box5.textContent) == box8.textContent) {
+    //   message.textContent = currentPlayer=== 'botr'? 'Bot WON!': ''Player WON!;
+    // }
+    // if ((box3.textContent == box6.textContent) == box9.textContent) {
+    //   message.textContent = currentPlayer=== 'botr'? 'Bot WON!': ''Player WON!;
+    // }
+    // if ((box1.textContent == box5.textContent) == box9.textContent) {
+    //   message.textContent = currentPlayer=== 'botr'? 'Bot WON!': ''Player WON!;
+    // }
+    // if (
+    //   !box1.textContent == "" &&
+    //   (box3.textContent == box5.textContent) == box7.textContent
+    // ) {
+    //   message.textContent = currentPlayer=== 'botr'? 'Bot WON!': ''Player WON!;
+    // }
+  }
+  // }
+  // }
+}
